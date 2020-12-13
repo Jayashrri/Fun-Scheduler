@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "./app/Navigator";
 import Search from "./app/Search";
 
+const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
