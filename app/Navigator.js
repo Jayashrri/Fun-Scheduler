@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import Analysis from '../Pages/Analysis';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -91,7 +92,7 @@ function MainStackNavigator() {
                 }}/>
             <Stack.Screen 
                 name="Stats" 
-                component={Stats} 
+                component={Analysis} 
                 options={{
                     tabBarLabel: 'Stats',
                     tabBarIcon: ({ color, size }) => (
