@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Analysis from './Pages/Analysis';
 import Landing from './Pages/Landing';
 import TaskList from './Pages/Tasks/TaskList';
+import Rewards from './Pages/Rewards'
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -51,19 +52,19 @@ function Stats() {
     );
 }
 
-function Rewards() {
-    return (
-        <View
-            style={{
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%"
-            }}>
-            <Text>Rewards page</Text>
-        </View>
-    );
-}
+// function Rewards() {
+//     return (
+//         <View
+//             style={{
+//                 flexDirection: "column",
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//                 height: "100%"
+//             }}>
+//             <Text>Rewards page</Text>
+//         </View>
+//     );
+// }
 
 function Tasks() {
     return (
