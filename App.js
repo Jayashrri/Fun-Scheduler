@@ -2,8 +2,8 @@ import "react-native-gesture-handler";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-import MainStackNavigator from "./app/Navigator";
-import Search from "./app/Search";
+import MainTabBarNavigator from "./app/TabNavigator";
+import MainStackNavigator from "./app/MainNavigator";
 
 export default function App() {
   return (

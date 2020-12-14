@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import Analysis from './Pages/Analysis';
+import Landing from './Pages/Landing';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const Stack = createBottomTabNavigator();
+const TabBar = createBottomTabNavigator();
 
 function Home() {
     return (
@@ -25,7 +27,7 @@ function Settings() {
     return (
         <View
             style={{
-                flexDirection: "column",
+                flexDirection: "col#8a2be2umn",
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%"
@@ -77,10 +79,10 @@ function Tasks() {
     );
 }
 
-function MainStackNavigator() {
+function MainTabBarNavigator() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen 
+        <TabBar.Navigator>
+            <TabBar.Screen 
                 name="Rewards" 
                 component={Rewards} 
                 options={{
@@ -89,25 +91,25 @@ function MainStackNavigator() {
                         <MaterialCommunityIcons name="trophy" color={color} size={size} />
                     ),
                 }}/>
-            <Stack.Screen 
+            <TabBar.Screen 
                 name="Stats" 
-                component={Stats} 
+                component={Analysis} 
                 options={{
                     tabBarLabel: 'Stats',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="chart-areaspline" color={color} size={size} />
                     ),
                 }}/>
-            <Stack.Screen 
+            <TabBar.Screen 
                 name="Home" 
-                component={Home} 
+                component={Landing} 
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" color={color} size={size} />
                     ),
                 }}/>
-            <Stack.Screen 
+            <TabBar.Screen 
                 name="Tasks" 
                 component={Tasks} 
                 options={{
@@ -116,17 +118,17 @@ function MainStackNavigator() {
                         <MaterialCommunityIcons name="calendar-check" color={color} size={size} />
                     ),
                 }}/>
-            <Stack.Screen 
+            <TabBar.Screen 
                 name="Settings" 
                 component={Settings} 
                 options={{
                     tabBarLabel: 'Settings',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="tools" color={color} size={size} />
+                        <MaterialCommunityIcons name="account-settings" color={color} size={size} />
                     ),
                 }}/>
-        </Stack.Navigator>
+        </TabBar.Navigator>
     );
 }
 
-export default MainStackNavigator;
+export default MainTabBarNavigator;

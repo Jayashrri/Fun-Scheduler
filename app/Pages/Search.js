@@ -27,7 +27,7 @@ function Earth(props) {
     return (
         <Animated.Image 
             resizeMode={'contain'}
-            source={require('./assets/earth_clip_art.png')}
+            source={require('../assets/earth_clip_art.png')}
             style={[props.style, {
                 width: "100%",
                 transform: [
@@ -44,7 +44,7 @@ const randomHexColor = () => {
     });
 };
 
-function Search() {
+function Search({ navigation }) {
 
     const [ searching, setSearching ] = useState(true);
 
@@ -61,7 +61,7 @@ function Search() {
             moveSearchingAnim,
             {
                 toValue: 1,
-                duration: 1000,
+                duration: 500,
                 easing: Easing.cubic,
                 useNativeDriver: false
             }
@@ -73,7 +73,7 @@ function Search() {
             moveBGAnim,
             {
                 toValue: 1,
-                duration: 2000,
+                duration: 1000,
                 easing: Easing.cubic,
                 useNativeDriver: false
             }
@@ -85,7 +85,7 @@ function Search() {
             moveResultAnim,
             {
                 toValue: 1,
-                duration: 1000,
+                duration: 500,
                 easing: Easing.cubic,
                 useNativeDriver: false
             }
@@ -126,10 +126,10 @@ function Search() {
 
     React.useEffect(() => {
         if (searching) {
-            setTimeout(moveSearching, 5000)
-            setTimeout(moveBG, 5000)
-            setTimeout(moveResult, 6000)
-            setTimeout(() => setSearching(false), 6000)
+            setTimeout(moveSearching, 4000)
+            setTimeout(moveBG, 4000)
+            setTimeout(moveResult, 4500)
+            setTimeout(() => setSearching(false), 4500)
         }
     })
 
@@ -190,7 +190,7 @@ function Search() {
                             Work on Startup Idea
                         </Animated.Text>
                         <Animated.Image 
-                            source={require('./assets/bulb.png')}
+                            source={require('../assets/bulb.png')}
                             style={{
                                 transform: [{ translateY: moveResultImageVal }]
                             }}
@@ -204,6 +204,7 @@ function Search() {
                         onPress={() => {
                             setRippleColor(randomHexColor());
                             setRippleOverflow(!rippleOverflow);
+                            navigation.navigate('Main', {screen: "Home"})
                         }}
                         background={TouchableNativeFeedback.Ripple(rippleColor, false)}
                     >
@@ -290,6 +291,7 @@ function Search() {
                             onPress={() => {
                                 setRippleColor(randomHexColor());
                                 setRippleOverflow(!rippleOverflow);
+                                navigation.navigate('Main', {screen: "Home"})
                             }}
                             background={TouchableNativeFeedback.Ripple(rippleColor, false)}
                         >
