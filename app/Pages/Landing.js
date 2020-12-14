@@ -19,8 +19,6 @@ function Landing() {
 
 const styles = StyleSheet.create({
     imgBackground: {
-        width: null,
-        height: null,
         flex: 1 ,
         resizeMode: 'cover'
     }, 
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
         top: '21%',
         height: 'fit-content',
         textTransform: 'uppercase',
-        fontSize: '20px'
+        fontSize: 20
     },
     button: {
         position: 'absolute',
@@ -56,9 +54,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         left: '30%',
         padding: '10px',
-        fontSize: '20px',
-        borderWidth: '2px',
-        borderRadius: '7px',
+        fontSize: 20,
+        borderWidth: 2,
+        borderRadius: 7,
         borderColor: '#000',
         color: '#fff',
         textTransform: 'uppercase',
