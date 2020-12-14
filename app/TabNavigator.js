@@ -27,7 +27,7 @@ function Settings() {
     return (
         <View
             style={{
-                flexDirection: "col#8a2be2umn",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%"
