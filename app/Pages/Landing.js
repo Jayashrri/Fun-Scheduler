@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Button, Image, ImageBackground, StyleSheet, Text, TouchableHighlight, View, Alert} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { Image, ImageBackground, StyleSheet, Text, TouchableHighlight, View, Alert} from 'react-native';
 import { CommonActions } from '@react-navigation/native'
 
 function Landing({ navigation }) {

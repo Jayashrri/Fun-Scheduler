@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Analysis from './Pages/Analysis';
 import Landing from './Pages/Landing';
