@@ -1,14 +1,7 @@
 import React, { useRef } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  Image,
-  Animated,
-} from "react-native";
+import { Text, View, StyleSheet, Dimensions, Animated } from "react-native";
 import { useState } from "react";
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Circle, Path, Image, Defs, ClipPath } from "react-native-svg";
 import moment from "moment";
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -52,6 +45,7 @@ function ProgressBar(props) {
 
   const radius = 0.4 * 0.8 * width;
   const arc = describeArc(cX, cY, radius, 0, props.angle);
+  const bgArc = describeArc(cX, cY, radius, 0, 359.99);
 
   const moveEgg = useRef(
     Animated.loop(
@@ -98,6 +92,11 @@ function ProgressBar(props) {
   return (
     <View style={styles.progress}>
       <Svg height={cY * 2} width={cX * 2}>
+        <Defs>
+          <ClipPath id="clip">
+            <Circle cx={cX} cy={cY} r={radius} />
+          </ClipPath>
+        </Defs>
         <Circle
           cx={cX}
           cy={cY}
@@ -105,6 +104,14 @@ function ProgressBar(props) {
           fill="white"
           stroke="black"
           strokeWidth="10"
+        />
+        <Image
+          href={require("../assets/nest.png")}
+          width={radius * 1.5}
+          preserveAspectRatio="xMidYMid slice"
+          x={cX - radius * 0.75}
+          y={cY + radius * 0.25}
+          clipPath="url(#clip)"
         />
         <Path
           d={arc}
@@ -124,16 +131,6 @@ function ProgressBar(props) {
           top: radius * 0.5,
           alignSelf: "center",
           transform: [{ rotate: eggPosition }],
-        }}
-      />
-      <Image
-        source={require("../assets/nest.png")}
-        style={{
-          width: radius * 1.5,
-          resizeMode: "contain",
-          position: "absolute",
-          top: cX + 0.25 * radius,
-          alignSelf: "center",
         }}
       />
     </View>
