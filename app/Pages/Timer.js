@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, Animated } from "react-native";
-import { useState } from "react";
 import Svg, { Circle, Path, Image, Defs, ClipPath } from "react-native-svg";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -45,7 +46,6 @@ function ProgressBar(props) {
 
   const radius = 0.4 * 0.8 * width;
   const arc = describeArc(cX, cY, radius, 0, props.angle);
-  const bgArc = describeArc(cX, cY, radius, 0, 359.99);
 
   const moveEgg = useRef(
     Animated.loop(
@@ -77,11 +77,12 @@ function ProgressBar(props) {
 
   React.useEffect(() => {
     if (props.eggRunning) {
+      eggAnimation.setValue(0);
       moveEgg.start();
     } else {
-      moveEgg.stop();
-      eggAnimation.setValue(0);
+      moveEgg.reset();
     }
+    return () => moveEgg.reset();
   }, [props.eggRunning]);
 
   const eggPosition = eggAnimation.interpolate({
@@ -94,7 +95,7 @@ function ProgressBar(props) {
       <Svg height={cY * 2} width={cX * 2}>
         <Defs>
           <ClipPath id="clip">
-            <Circle cx={cX} cy={cY} r={radius} />
+            <Circle cx={cX} cy={cY} r={radius - 5} />
           </ClipPath>
         </Defs>
         <Circle
@@ -137,7 +138,7 @@ function ProgressBar(props) {
   );
 }
 
-function Timer() {
+function Timer({ navigation }) {
   const [running, setRunning] = useState(true);
   const [totalTime, setTotalTime] = useState(0.25);
   const [endTime, setEndTime] = useState(moment.duration(totalTime, "m"));
@@ -151,10 +152,20 @@ function Timer() {
 
   const angleIncrement = 359.99 / (totalTime * 60);
 
+  const toggleTimer = () => {
+    setRunning(!running);
+    setEggRunning(!eggRunning);
+  };
+
+  const stopTimer = () => {
+    navigation.navigate("Main", { screen: "Home" });
+  };
+
   const updateTimer = () => {
     if (endTime.asSeconds() <= 0) {
       setRunning(false);
       setEggRunning(false);
+      stopTimer();
     } else {
       endTime.subtract(1, "s");
       setEndTime(endTime);
@@ -184,14 +195,36 @@ function Timer() {
     }
 
     return () => clearInterval(timerInterval);
-  }, [endTime, angle]);
+  }, [endTime, angle, running]);
 
   return (
     <View style={styles.container}>
-      <ProgressBar angle={angle} eggRunning={eggRunning} />
-      <Text style={styles.timerText}>
-        {state.hours} : {state.minutes} : {state.seconds}
-      </Text>
+      <View>
+        <View style={{ transform: [{ scale: 1.25 }] }}>
+          <ProgressBar angle={angle} eggRunning={eggRunning} />
+        </View>
+        <Text style={styles.timerText}>
+          {state.hours} : {state.minutes} : {state.seconds}
+        </Text>
+      </View>
+      <View style={styles.buttons}>
+        {running ? (
+          <>
+            <TouchableOpacity onPress={toggleTimer}>
+              <MaterialCommunityIcons name="pause" size={70} color="black" />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity onPress={toggleTimer}>
+              <MaterialCommunityIcons name="play" size={70} color="black" />
+            </TouchableOpacity>
+          </>
+        )}
+        <TouchableOpacity onPress={stopTimer}>
+          <MaterialCommunityIcons name="stop" size={70} color="black" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -200,18 +233,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "aquamarine",
-    alignItems: "center",
     justifyContent: "center",
   },
 
   timerText: {
     fontWeight: "bold",
     fontSize: 50,
+    alignSelf: "center",
   },
 
   progress: {
     aspectRatio: 1,
     alignItems: "center",
+  },
+
+  buttons: {
+    margin: 20,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
 
