@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Analysis from './Pages/Analysis';
 import Landing from './Pages/Landing';
+import TaskList from './Pages/Tasks/TaskList';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -110,7 +111,7 @@ function MainTabBarNavigator() {
                 }}/>
             <TabBar.Screen 
                 name="Tasks" 
-                component={Tasks} 
+                component={TaskList} 
                 options={{
                     tabBarLabel: 'Tasks',
                     tabBarIcon: ({ color, size }) => (

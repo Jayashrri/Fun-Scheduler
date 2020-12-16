@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     header: {
         textAlign: "center",
         top: 20,
-        padding: 10,
+        padding: 20,
         textTransform: "uppercase",
         fontWeight: "bold",
-        fontSize: 20,
+        fontSize: 25,
     },
     header2: {
         textAlign: "center",
