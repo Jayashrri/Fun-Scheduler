@@ -9,40 +9,48 @@ function Rewards({navigation}) {
                 <Text style={styles.headerText}>Rewards</Text>
         </View>
       <ScrollView style={styles.scrollView}>
-          <View style={styles.box}>
-        <View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View>
-        <View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View><View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View>
-        <View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View><View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View>
-        <View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View><View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View>
-        <View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View><View style={styles.imgContainer}>
-            <Image source={require('../assets/red_dino.png')} style={styles.rewardsImage}></Image>
-            <Text style={styles.imgLabel}>Reward 1</Text>
-        </View>
-        </View>
+            <View style={styles.box}>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino0.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 1</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino1.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 2</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino2.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 3</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino3.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 4</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino4.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 5</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino5.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 6</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino6.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 7</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino7.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 8</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino8.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 9</Text>
+                </View>
+                <View style={styles.imgContainer}>
+                    <Image source={require('../assets/dino_images/dino9.png')} style={styles.rewardsImage}></Image>
+                    <Text style={styles.imgLabel}>Reward 10</Text>
+                </View>
+            </View>
       </ScrollView>
     </View>
   );
