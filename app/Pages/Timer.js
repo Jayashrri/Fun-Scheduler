@@ -2,8 +2,13 @@ import React, { useRef, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, Animated } from "react-native";
 import Svg, { Circle, Path, Image, Defs, ClipPath } from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import moment from "moment";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import moment from "moment";
+
+import Task from "../Models/Task";
+import Session from "../Models/Session";
+import Dino from "../Models/Dino";
+import { useCallback } from "react";
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -138,10 +143,32 @@ function ProgressBar(props) {
   );
 }
 
-function Timer({ navigation }) {
+function Timer({ navigation, taskId }) {
+  // let task = Task.find(taskId);
+  // sessionDuration = Math.min(task.duration - task.timeSpent, sessionDuration);
+  let sessionDuration = 0.1;
+
+  const testDB = useCallback(async () => {
+    await Dino.destroyAll();
+    let props = {
+      type: "IDK",
+      is_unlocked: false,
+      image_url: "INTERNET",
+    };
+    await Dino.create(props);
+
+    props.type = "BLAH";
+    props.is_unlocked = true;
+    props.image_url = "BLAH";
+    await Dino.create(props);
+
+    let results = await Dino.query();
+    console.log(results);
+  }, []);
+
   const [running, setRunning] = useState(true);
-  const [totalTime, setTotalTime] = useState(0.25);
-  const [endTime, setEndTime] = useState(moment.duration(totalTime, "m"));
+  const [completed, setCompleted] = useState(false);
+  const [endTime, setEndTime] = useState(moment.duration(sessionDuration, "m"));
   const [state, setState] = useState({
     hours: ("00" + endTime.hours()).slice(-2),
     minutes: ("00" + endTime.minutes()).slice(-2),
@@ -150,7 +177,9 @@ function Timer({ navigation }) {
   const [angle, setAngle] = useState(0.01);
   const [eggRunning, setEggRunning] = useState(true);
 
-  const angleIncrement = 359.99 / (totalTime * 60);
+  const angleIncrement = 359.99 / (sessionDuration * 60);
+
+  const startTime = Date.now();
 
   const toggleTimer = () => {
     setRunning(!running);
@@ -161,8 +190,23 @@ function Timer({ navigation }) {
     navigation.navigate("Main", { screen: "Home" });
   };
 
+  const endTimer = () => {
+    setCompleted(true);
+
+    task.timeSpent += sessionDuration;
+    if (task.timeSpent == task.duration) task.status = false;
+
+    let sessionDetails = {
+      task: taskId,
+      start_time: startTime,
+      duration: sessionDuration,
+    };
+    Session.create(sessionDetails);
+  };
+
   const updateTimer = () => {
     if (endTime.asSeconds() <= 0) {
+      testDB();
       setRunning(false);
       setEggRunning(false);
       stopTimer();
@@ -180,8 +224,7 @@ function Timer({ navigation }) {
         seconds,
       });
 
-      const newAngle =
-        angle + angleIncrement <= 359.99 ? angle + angleIncrement : 359.99;
+      const newAngle = Math.min(angle + angleIncrement, 359.99);
       setAngle(newAngle);
     }
   };
@@ -199,32 +242,34 @@ function Timer({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View>
-        <View style={{ transform: [{ scale: 1.25 }] }}>
-          <ProgressBar angle={angle} eggRunning={eggRunning} />
-        </View>
-        <Text style={styles.timerText}>
-          {state.hours} : {state.minutes} : {state.seconds}
-        </Text>
-      </View>
-      <View style={styles.buttons}>
-        {running ? (
-          <>
-            <TouchableOpacity onPress={toggleTimer}>
-              <MaterialCommunityIcons name="pause" size={70} color="black" />
+      {completed ? (
+        <View></View>
+      ) : (
+        <>
+          <View>
+            <View style={{ transform: [{ scale: 1.25 }] }}>
+              <ProgressBar angle={angle} eggRunning={eggRunning} />
+            </View>
+            <Text style={styles.timerText}>
+              {state.hours} : {state.minutes} : {state.seconds}
+            </Text>
+          </View>
+          <View style={styles.buttons}>
+            {running ? (
+              <TouchableOpacity onPress={toggleTimer}>
+                <MaterialCommunityIcons name="pause" size={70} color="black" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={toggleTimer}>
+                <MaterialCommunityIcons name="play" size={70} color="black" />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity onPress={stopTimer}>
+              <MaterialCommunityIcons name="stop" size={70} color="black" />
             </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <TouchableOpacity onPress={toggleTimer}>
-              <MaterialCommunityIcons name="play" size={70} color="black" />
-            </TouchableOpacity>
-          </>
-        )}
-        <TouchableOpacity onPress={stopTimer}>
-          <MaterialCommunityIcons name="stop" size={70} color="black" />
-        </TouchableOpacity>
-      </View>
+          </View>
+        </>
+      )}
     </View>
   );
 }
