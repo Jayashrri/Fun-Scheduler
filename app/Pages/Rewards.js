@@ -77,7 +77,7 @@ function Rewards({navigation}) {
                 status_eq: true
             },});
             console.log(tasks.length)
-            setTaskCount(tasks.length);
+            setTaskCount(tasks.length + 1);
         }
         fetch();
     }, [])
@@ -88,11 +88,11 @@ function Rewards({navigation}) {
         rewards = <Text style={styles.pleaseText}>Please complete some tasks to get your rewards.</Text>
     }else{
         let count = parseInt(Math.log(taskCount + 1)/(Math.log(2)));
-        let data = dinoData.slice(0, count);
+        let data = dinoData.slice(0, count + 5);
         rewards = data.map((d, index) => {
             return (
-                    <View style={styles.imgContainer}>
-                        <Image key={index} source={d.image_url} style={styles.rewardsImage}></Image>
+                    <View key={index} style={styles.imgContainer}>
+                        <Image source={d.image_url} style={styles.rewardsImage}></Image>
                         <Text style={styles.imgLabel}>{d.type}</Text>
                     </View>
             )
@@ -199,7 +199,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#e5e5e5'
     },
     imgLabel: {
-        textAlign: 'center'
+        textAlign: 'center',
+        textTransform: 'capitalize'
     }
 });
 
