@@ -82,7 +82,7 @@ function Tasks() {
 
 function MainTabBarNavigator() {
     return (
-        <TabBar.Navigator>
+        <TabBar.Navigator initialRouteName="Home">
             <TabBar.Screen 
                 name="Rewards" 
                 component={Rewards} 

@@ -26,7 +26,7 @@ const initializeDB = () => {
 
   Task.create({
     id: 2,
-    title: 'Call girlfriend',
+    title: 'Write Thesis',
     description: 'idk',
     duration: 1,
     deadline: '2020-12-23',
