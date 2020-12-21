@@ -22,7 +22,7 @@ export default class Task extends BaseModel {
       duration: { type: types.NUMERIC, not_null: true },
       deadline: { type: types.DATETIME },
       time_spent: { type: types.NUMERIC, default: 0 },
-      status: { type: types.BOOLEAN, default: true },
+      status: { type: types.BOOLEAN, default: false },
     };
   }
 }
