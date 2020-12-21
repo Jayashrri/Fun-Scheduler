@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "./app/MainNavigator";
 
@@ -8,14 +8,18 @@ import Preferences from "./app/Models/Preferences";
 import Session from "./app/Models/Session";
 import Task from "./app/Models/Task";
 
-const initializeDB = () => {
-  Dino.createTable();
-  Preferences.createTable();
-  Session.createTable();
-  Task.createTable();
-};
-
 export default function App() {
+  const initializeDB = useCallback(async () => {
+    await Task.dropTable();
+    await Session.dropTable();
+    await Preferences.dropTable();
+
+    await Dino.createTable();
+    await Preferences.createTable();
+    await Session.createTable();
+    await Task.createTable();
+  });
+
   initializeDB();
 
   return (

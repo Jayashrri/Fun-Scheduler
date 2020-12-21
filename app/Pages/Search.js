@@ -233,7 +233,7 @@ function Search({ navigation }) {
                         onPress={() => {
                             setRippleColor(randomHexColor());
                             setRippleOverflow(!rippleOverflow);
-                            navigation.navigate('Timer', {screen: "Timer"})
+                            navigation.navigate('Timer', {screen: "Timer", taskId: 1})
                         }}
                         background={TouchableNativeFeedback.Ripple(rippleColor, false)}
                     >

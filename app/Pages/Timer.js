@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { Text, View, StyleSheet, Dimensions, Animated } from "react-native";
 import Svg, { Circle, Path, Image, Defs, ClipPath } from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -7,8 +7,7 @@ import moment from "moment";
 
 import Task from "../Models/Task";
 import Session from "../Models/Session";
-import Dino from "../Models/Dino";
-import { useCallback } from "react";
+import Preferences from "../Models/Preferences";
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -143,30 +142,43 @@ function ProgressBar(props) {
   );
 }
 
-function Timer({ navigation, taskId }) {
-  // let task = Task.find(taskId);
-  // sessionDuration = Math.min(task.duration - task.timeSpent, sessionDuration);
-  let sessionDuration = 0.1;
+function Timer({ navigation, route }) {
+  let sessionDuration;
+  let task;
+  const { taskId } = route.params;
 
-  const testDB = useCallback(async () => {
-    await Dino.destroyAll();
+  const getTask = useCallback(async () => {
     let props = {
-      type: "IDK",
-      is_unlocked: false,
-      image_url: "INTERNET",
+      id: 1,
+      title: "ABCD",
+      duration: 1,
+      time_spent: 0,
+      status: false,
     };
-    await Dino.create(props);
 
-    props.type = "BLAH";
-    props.is_unlocked = true;
-    props.image_url = "BLAH";
-    await Dino.create(props);
+    await Task.create(props);
+    console.log(taskId)
 
-    let results = await Dino.query();
-    console.log(results);
+    props = {
+      key: "duration",
+      value: 0.1,
+    };
+
+    await Preferences.create(props);
+
+    task = await Task.findBy({ id_eq: taskId });
+    console.log(task)
+    let durationPreference = await Preferences.findBy({ key_eq: "duration" });
+
+    sessionDuration = Math.min(
+      task.duration - task.timeSpent,
+      durationPreference.value
+    );
+
+    setRunning(true);
   }, []);
 
-  const [running, setRunning] = useState(true);
+  const [running, setRunning] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [endTime, setEndTime] = useState(moment.duration(sessionDuration, "m"));
   const [state, setState] = useState({
@@ -190,7 +202,7 @@ function Timer({ navigation, taskId }) {
     navigation.navigate("Main", { screen: "Home" });
   };
 
-  const endTimer = () => {
+  const endTimer = useCallback(async () => {
     setCompleted(true);
 
     task.timeSpent += sessionDuration;
@@ -201,15 +213,14 @@ function Timer({ navigation, taskId }) {
       start_time: startTime,
       duration: sessionDuration,
     };
-    Session.create(sessionDetails);
-  };
+    await Session.create(sessionDetails);
+  }, []);
 
   const updateTimer = () => {
     if (endTime.asSeconds() <= 0) {
-      testDB();
       setRunning(false);
       setEggRunning(false);
-      stopTimer();
+      endTimer();
     } else {
       endTime.subtract(1, "s");
       setEndTime(endTime);
@@ -230,7 +241,7 @@ function Timer({ navigation, taskId }) {
   };
 
   React.useEffect(() => {
-    if (!running) return;
+    if (!running) getTask();
 
     let timerInterval;
     if (running) {
