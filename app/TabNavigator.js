@@ -102,15 +102,6 @@ function MainTabBarNavigator() {
                     ),
                 }}/>
             <TabBar.Screen 
-                name="Home" 
-                component={Landing} 
-                options={{
-                    tabBarLabel: 'Home',
-                    tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home" color={color} size={size} />
-                    ),
-                }}/>
-            <TabBar.Screen 
                 name="Tasks" 
                 component={TaskList} 
                 options={{
@@ -119,7 +110,16 @@ function MainTabBarNavigator() {
                         <MaterialCommunityIcons name="calendar-check" color={color} size={size} />
                     ),
                 }}/>
-            <TabBar.Screen 
+                <TabBar.Screen 
+                name="Home" 
+                component={Landing} 
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
+                    ),
+                }}/>
+            {/* <TabBar.Screen 
                 name="Settings" 
                 component={Settings} 
                 options={{
@@ -127,7 +127,7 @@ function MainTabBarNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-settings" color={color} size={size} />
                     ),
-                }}/>
+                }}/> */}
         </TabBar.Navigator>
     );
 }

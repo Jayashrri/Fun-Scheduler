@@ -8,7 +8,7 @@ function Landing({ navigation }) {
         <View style={styles.container}>
             <ImageBackground source={require('../assets/home_bg.png')} style={styles.imgBackground}>
                     <Image source={require('../assets/home_clouds.png')} style={styles.imgCloud}></Image>
-                    <Text style={styles.header}>Welcome Back, <Text style={{color: '#ff0000'}}>Aananth!</Text></Text>
+                    <Text style={styles.header}>Welcome Back, <Text style={{color: '#ff0000'}}>Saurus!</Text></Text>
                     <Image source={require('../assets/red_dino.png')} style={styles.imgDino}></Image>
                     <TouchableHighlight
                         style={styles.button}
