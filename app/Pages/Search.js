@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, Image, TouchableNativeFeedback, Alert, Animated, Easing } from 'react-native'
 
+import Task from '../Models/Task';
+
 function Earth(props) {
     const [ rotation, setRotation ] = useState(new Animated.Value(0));
 
@@ -55,6 +57,45 @@ function Search({ navigation }) {
     const [ moveBGAnim, setMoveBGAnim ] = useState(new Animated.Value(0));
     const [ moveResultAnim, setMoveResultAnim ] = useState(new Animated.Value(0));
 
+    const [ task, setTask ] = useState("");
+
+    const weighted_random = (items, weights) => {
+        var i;
+    
+        for (i = 0; i < weights.length; i++)
+            weights[i] += weights[i - 1] || 0;
+        
+        var random = Math.random() * weights[weights.length - 1];
+        
+        for (i = 0; i < weights.length; i++)
+            if (weights[i] > random)
+                break;
+        
+        return items[i];
+    }
+
+    const dateDiff = (date1, date2) => {
+        const diffTime = Math.abs(date2 - date1) / 1000 / 60; // Convert to minutes
+        return diffTime;
+    }
+
+    const suggestTask = async () => {
+        let taskList = await Task.query({});
+
+        taskList = taskList.filter(t => t.status === false);
+
+        const currentDate = Date.now();
+
+        let taskFactors = taskList.map(t => (t.duration - t.time_spent) / dateDiff(currentDate, new Date(t.deadline)))
+
+        let taskSum = taskFactors.reduce((a, c) => a + c);
+
+        let taskProbabilities = taskFactors.map(t => t / taskSum);
+
+        let chosenTask = weighted_random(taskList, taskProbabilities);
+
+        setTask(chosenTask);
+    }
 
     const moveSearching = () => {
         Animated.timing(
@@ -130,6 +171,7 @@ function Search({ navigation }) {
             setTimeout(moveBG, 4000)
             setTimeout(moveResult, 4500)
             setTimeout(() => setSearching(false), 4500)
+            setTimeout(suggestTask, 4500)
         }
     })
 
@@ -187,7 +229,7 @@ function Search({ navigation }) {
                                 marginBottom: 32,
                                 transform: [{ translateY: moveResultVal }]
                             }}>
-                            Work on Startup Idea
+                            {task.title}
                         </Animated.Text>
                         <Animated.Image 
                             source={require('../assets/bulb.png')}
@@ -233,7 +275,7 @@ function Search({ navigation }) {
                         onPress={() => {
                             setRippleColor(randomHexColor());
                             setRippleOverflow(!rippleOverflow);
-                            navigation.navigate('Timer', {screen: "Timer"})
+                            navigation.navigate('Timer', {screen: "Timer", params: { taskId: task.id }})
                         }}
                         background={TouchableNativeFeedback.Ripple(rippleColor, false)}
                     >

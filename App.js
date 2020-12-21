@@ -13,6 +13,32 @@ const initializeDB = () => {
   Preferences.createTable();
   Session.createTable();
   Task.createTable();
+
+  Task.destroyAll();
+
+  Task.create({
+    id: 1,
+    title: 'Do Homework',
+    description: 'idk',
+    duration: 1,
+    deadline: '2020-12-24',
+  });
+
+  Task.create({
+    id: 2,
+    title: 'Call girlfriend',
+    description: 'idk',
+    duration: 1,
+    deadline: '2020-12-23',
+  });
+
+  Task.create({
+    id: 3,
+    title: 'Work on Startup',
+    description: 'idk',
+    duration: 1,
+    deadline: '2020-12-22',
+  });
 };
 
 export default function App() {
