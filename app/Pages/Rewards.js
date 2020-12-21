@@ -76,6 +76,7 @@ function Rewards({navigation}) {
             where: {
                 status_eq: true
             },});
+            console.log(tasks.length)
             setTaskCount(tasks.length);
         }
         fetch();
@@ -83,6 +84,8 @@ function Rewards({navigation}) {
     let rewards;
     if(taskCount === null){
         rewards = <ActivityIndicator size="large" />
+    }else if(taskCount === 0){
+        rewards = <Text style={styles.pleaseText}>Please complete some tasks to get your rewards.</Text>
     }else{
         let count = parseInt(Math.log(taskCount + 1)/(Math.log(2)));
         let data = dinoData.slice(0, count);
@@ -177,6 +180,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-evenly',
+        alignSelf: 'stretch',
+        alignItems: 'center'
     },
     imgContainer: {
         width: '40%',
