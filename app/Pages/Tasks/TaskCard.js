@@ -37,6 +37,7 @@ export default function TaskCard({ task }) {
       <View style={styles.cardHeader}>
         <Text style={styles.date}>{formatDate(task.date)}</Text>
         <Text style={styles.title}>{task.title}</Text>
+        <Text style={styles.date}>{task.description}</Text>
       </View>
 
       <View style={styles.counterContainer} >

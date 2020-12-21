@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import {View, Text, TouchableHighlight} from 'react-native';
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+ import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import Task from '../../Models/Task';
 
 const styles = StyleSheet.create({
     fieldContainer: {
-      marginTop: 40,
-      marginBottom: 10,
+      marginTop: 20,
+      // marginBottom: 10,
       backgroundColor: '#fff',
     },
     header: {
@@ -64,26 +66,42 @@ const styles = StyleSheet.create({
 class AddTaskForm extends Component {
   state = {
     title: null,
-    date: '',
+    date: 'Jan 01 2021 01:01:01',
+    duration: null,
+    description: null,
   };
 
-  handleAddPress = () => {
-    // saveTask(this.state)
-    // .then(() => 
-    this.props.navigation.goBack();
+  handleAddPress = async () => {
+    let newTask = {
+      title: this.state.title,
+      deadline: this.state.date,
+      description: "",
+      duration: formatDateTime(this.state.duration),
+      time_spent: 0,
+      status: false
+    };
+
+    //add with create()
+    Task.create(newTask).then(() => {
+      this.props.navigation.goBack();
+    }
+    );
   }
+
   handleChangeTitle = (value) => {
       this.setState( { title: value});
   }
+  handleChangeDesc = (value) => {
+    this.setState( { description: value});
+}
+  handleChangeDuration = (value) => {
+    this.setState( { duration: value});
+}
+  handleChangeDate = (value) => {
+    this.setState({ date: value});
+  }
   handleDatePress = () => {
     this.setState({showDatePicker: true,});
-  }
-  handleDatePicked = (date) => {
-    this.setState({
-      date,
-    });
-
-    this.handleDatePickerHide();
   }
   handleDatePickerHide = () => {
     this.setState({
@@ -106,22 +124,47 @@ class AddTaskForm extends Component {
             onChange={this.handleChangeTitle}
           />
       </View>
+      {/* <View style={styles.fieldContainer}>
+      <Text style={styles.label}>Description of the task:</Text>
+      <TextInput
+            style={styles.text}
+            onChangeText={this.handleChangeDesc}
+            placeholder="Task description"
+            spellCheck={false}
+            value={this.state.description}
+            onChange={this.handleChangeDesc}
+          />
+      </View> */}
+      <View style={styles.fieldContainer}>
+      <Text style={styles.label}>Duration:</Text>
+      <TextInput
+            style={styles.text}
+            onChangeText={this.handleChangeDuration}
+            placeholder="Task duration"
+            spellCheck={false}
+            value={this.state.duration}
+            onChange={this.handleChangeDuration}
+            keyboardType={'numeric'}
+          />
+      </View>
       <View style={styles.fieldContainer}>
       <Text style={styles.label}>Deadline for the task:</Text>
-         <TextInput
-            style={[styles.text, styles.borderTop]}
-            placeholder="Task date"
+      <TextInput
+            style={styles.text}
+            onChangeText={this.handleChangeDate}
+            placeholder="Jan 01 2021 01:01:01"
             spellCheck={false}
-            value={formatDateTime(this.state.date.toString())}
-            editable={!this.state.showDatePicker}
-            onFocus={this.handleDatePress}
-        />
-         <DateTimePickerModal
+            value={this.state.date}
+            onChange={this.handleChangeDate}
+            dataDetectorTypes='calendarEvent'
+          />
+
+          {/* <DateTimePickerModal
             isVisible={this.state.showDatePicker}
             mode="datetime"
             onConfirm={this.handleDatePicked}
             onCancel={this.handleDatePickerHide}
-          />
+          /> */}
       </View>
         <TouchableHighlight
           onPress={this.handleAddPress}

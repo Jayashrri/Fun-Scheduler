@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, Text, StyleSheet } from 'react-native';
 import ActionButton from 'react-native-action-button';
+import Task from '../../Models/Task';
 
 import TaskCard from './TaskCard';
 
@@ -35,11 +36,29 @@ class TaskList extends Component {
       });
     }, 1000);
 
-    const tasks = require('./db.json').tasks.map(e => ({
-      ...e,
-      date: new Date(e.date),
-    }));
-    this.setState({ tasks });
+    this.props.navigation.addListener(
+      'focus',
+      () => {
+        Task.query().then( tasks => {
+          tasks = (tasks).map(e => ({
+            ...e,
+            date: new Date(e.deadline),
+          }));
+          // console.log("tasks:"+JSON.stringify(tasks))
+          this.setState({ tasks });
+        }
+      ) 
+     }
+    );
+
+    Task.query().then( tasks => {
+        tasks = (tasks).map(e => ({
+          ...e,
+          date: new Date(e.deadline),
+        }));
+        this.setState({ tasks });
+      }
+    )     
   }
 
   handleAddTask = () => {
@@ -51,12 +70,14 @@ class TaskList extends Component {
     return [
         <Text style={styles.header}>Your tasks</Text>,
       <FlatList
-        key="flatlist"
+        //key="flatlist"
+        key={item => item.id.toString()}
         data={this.state.tasks}
         style={styles.list}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         renderItem={({ item, separators }) => (
           <TaskCard
+            key={item.id.toString()}
             task={item}
           />
         )}
